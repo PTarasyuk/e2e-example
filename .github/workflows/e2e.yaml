@@ -1,4 +1,4 @@
-name: Tests
+name: E2E Tests
 
 on:
   push:
@@ -58,9 +58,19 @@ jobs:
           PG_PORT: ${{ secrets.PG_PORT }}
       
       - name: Upload test artifacts
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: test-artifacts
+          path: |
+            cypress/screenshots
+            cypress/videos
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
           path: |
             cypress/screenshots
             cypress/videos
