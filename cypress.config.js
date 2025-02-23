@@ -4,9 +4,6 @@ require('dotenv').config();
 
 module.exports = defineConfig({
   video: true,
-  trashAssetsBeforeRuns: false,
-  browser: 'firefox',
-  defaultBrowser: 'chrome',
   e2e: {
     setupNodeEvents(on, config) {
       on('task', {
