@@ -30,6 +30,7 @@ docker run -d \
   --name pagila \
   -e POSTGRES_USER=${PG_USER} \
   -e POSTGRES_PASSWORD=${PG_PASSWORD} \
+  -e POSTGRES_DB=${PG_DATABASE} \
   -p ${PG_PORT}:5432 \
   pagila-db
 
