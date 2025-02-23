@@ -1,6 +1,7 @@
 let countryId;
 
 describe('DB Check', () => {
+
   it('Successfully connects to Pagila database', () => {
     cy.queryDb('SELECT version()')
       .then((result) => {
@@ -20,7 +21,6 @@ describe('DB Check', () => {
       ORDER BY table_name;
     `).then((tables) => {
       expect(tables.length).to.be.greaterThan(0);
-
       cy.log('Found tables:');
       tables.forEach(table => {
         cy.log(`- ${table.table_name} (${table.table_type})`);
@@ -95,4 +95,5 @@ describe('DB Check', () => {
       });
     });
   });
+
 });

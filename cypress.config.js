@@ -3,6 +3,7 @@ const { Client } = require('pg');
 require('dotenv').config();
 
 module.exports = defineConfig({
+  projectId: "8e38ew",
   video: true,
   e2e: {
     setupNodeEvents(on, config) {

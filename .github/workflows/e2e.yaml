@@ -31,14 +31,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '22'
+      #     cache: 'npm'
 
-      - name: Install dependencies
-        run: npm install
+      # - name: Install dependencies
+      #   run: npm install
 
       - name: Setup Pagila Database
         run: |
@@ -48,14 +48,23 @@ jobs:
         env:
           PGPASSWORD: ${{ secrets.PG_PASSWORD }}
 
-      - name: Run tests
-        run: npm test
+      - name: create env file
+        run: |
+          touch .env
+          echo PG_USER=${{ secrets.PG_USER }} >> .env
+          echo PG_HOST=${{ secrets.PG_HOST }} >> .env
+          echo PG_DATABASE=${{ secrets.PG_DATABASE }} >> .env
+          echo PG_PASSWORD=${{ secrets.PG_PASSWORD }} >> .env
+          echo PG_PORT=${{ secrets.PG_PORT }} >> .env
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          start: npm test
+          record: true
         env:
-          PG_USER: ${{ secrets.PG_USER }}
-          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
-          PG_HOST: ${{ secrets.PG_HOST }}
-          PG_DATABASE: ${{ secrets.PG_DATABASE }}
-          PG_PORT: ${{ secrets.PG_PORT }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Upload test artifacts
         if: failure()
