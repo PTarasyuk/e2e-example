@@ -6,14 +6,18 @@ module.exports = defineConfig({
   video: true,
   e2e: {
     setupNodeEvents(on, config) {
+      config.env = {
+        ...process.env,
+        ...config.env
+      };
       on('task', {
         async queryDb(query) {
           const client = new Client({
             user: process.env.PG_USER,
-            host: 'localhost',
+            host: process.env.PG_HOST,
             database: process.env.PG_DB,
             password: process.env.PG_PASSWORD,
-            port: process.env.PG_PORT,
+            port: parseInt(process.env.PG_PORT),
           });
           
           try {
