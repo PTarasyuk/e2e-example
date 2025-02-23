@@ -43,8 +43,14 @@ jobs:
       - name: Setup Pagila Database
         run: |
           cd pagila
+          echo "Initializing schema..."
           psql -h localhost -U ${{ secrets.PG_USER }} -d ${{ secrets.PG_DATABASE }} -f pagila-schema.sql
+          echo "Checking if tables were created..."
+          psql -h localhost -U ${{ secrets.PG_USER }} -d ${{ secrets.PG_DATABASE }} -c "\dt"
+          echo "Loading data..."
           psql -h localhost -U ${{ secrets.PG_USER }} -d ${{ secrets.PG_DATABASE }} -f pagila-data.sql
+          echo "Checking data..."
+          psql -h localhost -U ${{ secrets.PG_USER }} -d ${{ secrets.PG_DATABASE }} -c "SELECT COUNT(*) FROM country;"
         env:
           PGPASSWORD: ${{ secrets.PG_PASSWORD }}
 
